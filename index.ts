@@ -51,8 +51,9 @@ const chapterUrls = newChapters
 
 const aab = '412263126806036491';
 const sayid = '332811201572634624';
+const jack = '300169693455581194';
 
-const mentionedUsers = [ aab, sayid ];
+const mentionedUsers = [ aab, sayid, jack ];
 
 const mentions = mentionedUsers
   .map((user) => `<@${user}>`)
