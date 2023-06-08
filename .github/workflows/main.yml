@@ -1,0 +1,30 @@
+name: Notify chapter
+
+on:
+  schedule:
+    - cron: '0/15 * * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: actions/cache@v3
+      with:
+        path: known-chapters.json
+        key: ${{ hashFiles('**/known-chapters.json') }}-known-chapters
+
+    - uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+
+    - run: bun install
+
+    - run: bun run index.ts
+      env:
+        DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        CHAPTERS_URL: ${{ vars.CHAPTERS_URL }}
+        CHAPTER_URL_ORIGIN: ${{ vars.CHAPTER_URL_ORIGIN }}
+
