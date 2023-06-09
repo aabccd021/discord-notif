@@ -1,11 +1,11 @@
-name: Notify chapter
+name: Notify New Chapters
 
 on:
   schedule:
     - cron: '0/5 * * * 3-5'
 
 jobs:
-  build:
+  notify:
     runs-on: ubuntu-latest
 
     steps:
