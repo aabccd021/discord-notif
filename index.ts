@@ -1,5 +1,3 @@
-console.log("Hello via Bun!");
-
 import * as cheerio from 'cheerio';
 
 const webhookUrl = process.env['DISCORD_WEBHOOK_URL'];
@@ -31,6 +29,7 @@ const currentChapters = $('a')
 const knownChaptersFile = Bun.file('known-chapters.json');
 
 if (knownChaptersFile.size === 0) {
+  console.log('No known chapters, saving current chapters as known');
   await Bun.write(knownChaptersFile, JSON.stringify(currentChapters, null, 2));
   process.exit(0);
 }
@@ -44,6 +43,8 @@ if (newChapters.length === 0) {
   console.log('No new chapters');
   process.exit(0);
 }
+
+console.log('New chapters found: ' + newChapters.join(' '));
 
 const chapterUrls = newChapters
   .map((chapter) => chapterUrlOrigin + chapter)

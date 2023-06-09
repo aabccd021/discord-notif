@@ -11,10 +11,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - uses: actions/cache@v3
+    - uses: dawidd6/action-download-artifact@v2
       with:
-        path: known-chapters.json
-        key: ${{ hashFiles('**/known-chapters.json') }}-known-chapters
+        if_no_artifact_found: warn
+        name: known-chapters
 
     - uses: oven-sh/setup-bun@v1
       with:
@@ -28,3 +28,7 @@ jobs:
         CHAPTERS_URL: ${{ vars.CHAPTERS_URL }}
         CHAPTER_URL_ORIGIN: ${{ vars.CHAPTER_URL_ORIGIN }}
 
+    - uses: actions/upload-artifact@v3
+      with:
+        path: known-chapters.json
+        name: known-chapters
