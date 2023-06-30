@@ -21,10 +21,14 @@ const chaptersHtml = await fetchChapters.text();
 
 const $ = cheerio.load(chaptersHtml);
 
-const currentChapters = $('a')
+const getChapterNameFromUrl = (href: string) => href.slice(0, 34)
+
+const currentChapterUrls = $('a')
   .map((_, element) => $(element).attr('href'))
   .get()
-  .filter((href) => href.startsWith('/chapters/'));
+  .filter((href) => href.startsWith('/chapters/'))
+
+const currentChapters = currentChapterUrls.map(getChapterNameFromUrl);
 
 const knownChaptersFile = Bun.file('known-chapters.json');
 
@@ -46,8 +50,9 @@ if (newChapters.length === 0) {
 
 console.log('New chapters found: ' + newChapters.join(' '));
 
-const chapterUrls = newChapters
-  .map((chapter) => chapterUrlOrigin + chapter)
+const chapterUrls = currentChapterUrls
+  .filter((chapterUrl) => newChapters.some((newChapter) => chapterUrl.startsWith(newChapter)))
+  .map((chapterUrl) => chapterUrlOrigin + chapterUrl)
   .join('\n');
 
 const aab = '412263126806036491';
